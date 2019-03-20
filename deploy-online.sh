@@ -24,6 +24,8 @@ docker cp conf/gremlin-server/socket-gremlin-server.yaml ${containerID}:/root/ja
 
 docker cp conf/gremlin-server/socket-janusgraph-hbase-es.properties ${containerID}:/root/janusgraph-0.2.2-hadoop2/conf/gremlin-server
 
+# cp bin scripts to docker 
+docker cp scripts/start-janusgraph.sh ${containerID}:/root/
 # pull gemini
 docker pull 10.72.100.25:5000/gemini-graph:1.0
 
