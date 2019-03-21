@@ -1,0 +1,32 @@
+version: '3'
+services:
+
+  taurus-nginx:
+    image: taurus-nginx:1.0
+    container_name: taurus-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+      - "/var/logs/nginx:/var/logs/nginx"  
+  
+  taurus-dms:
+    image: taurus-dms:1.0
+    container_name: taurus-dms
+    environment:
+      profile: ci
+      eureka.client.serviceUrl.defaultZone: http://10.72.100.78:9000/eureka/
+      eureka.instance.ip-address: 10.72.100.78
+      spring.datasource.url: jdbc:postgresql://10.72.100.78/taurus_dms
+      spring.datasource.username: taurus_dms
+      spring.datasource.password: taurus_dms
+      spring.data.mongodb.host: 10.72.100.78
+      spring.redis.host: 10.72.100.78 
+    ports:
+      - "9010:9010"
+    volumes:
+      - "/var/logs/dms:/var/logs/dms"
+      - "/dms/upload:/dms/upload"
+      - "/dms/file:/dms/file"
+
+

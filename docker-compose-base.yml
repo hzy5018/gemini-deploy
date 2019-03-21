@@ -1,0 +1,47 @@
+version: '3'
+services:
+
+  ccidata-eureka:
+    image: ccidata-eureka:1.0
+    container_name: ccidata-eureka
+    environment:
+      profile: ci
+    ports:
+      - "9000:9000"
+    volumes:
+      - "/var/logs/eureka:/var/logs/eureka"
+
+  taurus-zuul:
+    image: taurus-zuul:1.0
+    container_name: taurus-zuul
+    depends_on:
+      - "ccidata-eureka"
+    environment:
+      profile: ci
+      eureka.client.serviceUrl.defaultZone: http://10.72.100.78:9000/eureka/
+      eureka.instance.ip-address: 10.72.100.78
+    ports:
+      - "9002:9002"
+    volumes:
+      - "/var/logs/zuul:/var/logs/zuul"
+
+  taurus-uaa:
+    image: taurus-uaa:1.0
+    container_name: taurus-uaa
+    depends_on:
+      - "ccidata-eureka"
+      - "taurus-zuul"
+    environment:
+      profile: ci
+      eureka.client.serviceUrl.defaultZone: http://10.72.100.78:9000/eureka/
+      eureka.instance.ip-address: 10.72.100.78
+      spring.datasource.url: jdbc:postgresql://10.72.100.78/taurus_dms
+      spring.datasource.username: taurus_dms
+      spring.datasource.password: taurus_dms
+      spring.data.mongodb.host: 10.72.100.78
+      spring.redis.host: 10.72.100.78
+    ports:
+      - "9012:9012"
+    volumes:
+      - "/var/logs/uaa:/var/logs/uaa"
+
