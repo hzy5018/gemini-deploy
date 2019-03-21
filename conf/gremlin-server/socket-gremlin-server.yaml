@@ -3,7 +3,7 @@ port: 8182
 scriptEvaluationTimeout: 30000
 channelizer: org.apache.tinkerpop.gremlin.server.channel.WsAndHttpChannelizer 
 graphs: {
-  graph: conf/gremlin-server/socket-janusgraph-hbase-server.properties
+  graph: conf/gremlin-server/socket-janusgraph-hbase-es.properties
 }
 plugins:
   - janusgraph.imports
