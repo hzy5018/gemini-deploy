@@ -20,10 +20,10 @@ docker exec -d cdh service ntpd start
 docker pull docker.elastic.co/elasticsearch/elasticsearch:6.3.2
 docker run -d --name es -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.3.2
 
-containerID=`docker inspect -f '{{.ID}}' cdh`
-docker cp software/janusgraph-0.2.2-hadoop2.zip ${containerID}:/root/janusgraph-0.2.2-hadoop2.zip
+containerID=`docker inspect -f '{{.ID}}' sandbox-hdp`
+docker cp software/janusgraph-0.2.2-hadoop2.zip ${containerID}:janusgraph-0.2.2-hadoop2.zip
 
-docker exec -d cdh unzip /root/janusgraph-0.2.2-hadoop2.zip
+docker exec -d sandbox-hdp unzip /root/janusgraph-0.2.2-hadoop2.zip
 
 # cp config files
 docker cp conf/gremlin-server/socket-gremlin-server.yaml ${containerID}:/janusgraph-0.2.2-hadoop2/conf/gremlin-server
