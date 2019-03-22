@@ -48,6 +48,8 @@ def defineCciDataSchema(janusGraph) {
     // global indices
     m.buildIndex("byBulkLoaderVertexId", Vertex.class).addKey(blid).buildCompositeIndex()
 
+    m.buildIndex("idCardById", Vertex.class).addKey(name).indexOnly(idCard).buildCompositeIndex()
+    
     m.buildIndex("homeById", Vertex.class).addKey(name).indexOnly(home).buildCompositeIndex()
 
     m.buildIndex("phoneById", Vertex.class).addKey(name).indexOnly(phone).buildCompositeIndex()

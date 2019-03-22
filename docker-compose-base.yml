@@ -45,3 +45,41 @@ services:
     volumes:
       - "/var/logs/uaa:/var/logs/uaa"
 
+  taurus-dms:
+    image: taurus-dms:1.0
+    container_name: taurus-dms
+    environment:
+      profile: ci
+      eureka.client.serviceUrl.defaultZone: http://10.72.100.78:9000/eureka/
+      eureka.instance.ip-address: 10.72.100.78
+      spring.datasource.url: jdbc:postgresql://10.72.100.78/taurus_dms
+      spring.datasource.username: taurus_dms
+      spring.datasource.password: taurus_dms
+      spring.data.mongodb.host: 10.72.100.78
+      spring.redis.host: 10.72.100.78 
+    ports:
+      - "9010:9010"
+    volumes:
+      - "/var/logs/dms:/var/logs/dms"
+      - "/dms/upload:/dms/upload"
+      - "/dms/file:/dms/file"
+
+  gemini-graph:
+    image: gemini-graph:1.0
+    container_name: gemini-graph
+    environment:
+      profile: ci
+      eureka.client.serviceUrl.defaultZone: http://10.72.100.78:9000/eureka/
+      eureka.instance.ip-address: 10.72.100.78
+      spring.datasource.url: jdbc:postgresql://10.72.100.78/gemini_graph
+      spring.datasource.username: taurus_dms
+      spring.datasource.password: taurus_dms
+      graphDb.url: http://10.72.100.33:8182
+      graphDb.name: ccigraph
+      job.backend.expert-model: http://10.72.100.4:9015/graph/run-offline/expert
+      job.backend.community-job: http://10.72.100.4:9015/graph/run-offline/louvain   
+    ports:
+      - "9014:9014"
+    volumes:
+      - "/var/logs/gemini:/var/logs/gemini"
+

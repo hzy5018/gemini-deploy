@@ -39,11 +39,30 @@ docker cp scripts/schema.groovy ${containerID}:/janusgraph-0.2.2-hadoop2
 docker cp scripts/schema.sh ${containerID}:/janusgraph-0.2.2-hadoop2
 
 # run ngix for gemini-frontend
-docker run --rm --name graph-nginx -v /webapps/ROOT:/usr/share/nginx/html:ro -v /root/nginx.conf:/etc/nginx/nginx.conf:ro -v /var/logs/nginx:/var/logs/nginx -p 80:80 -d nginx:1.15.0
+docker run --rm --name graph-nginx -v /root/webapps/ROOT:/usr/share/nginx/html:ro -v /root/nginx.conf:/etc/nginx/nginx.conf:ro -v /var/logs/nginx:/var/logs/nginx -p 80:80 -d nginx:1.15.0
 
 
 docker run --rm --name graph-nginx -v /home/bunddata/tools/apache-tomcat-8.5.32/webapps/ROOT:/usr/share/nginx/html:ro -v /home/bunddata/nginx.conf:/etc/nginx/nginx.conf:ro -v /var/logs/nginx:/var/logs/nginx -p 80:80 -d nginx:1.15.0
 
+# 加载后台镜像
+docker load -i images/cciata-eureka.tar
+docker load -i images/gemini-graph.tar
+docker load -i images/taurus-uaa-qa.tar
+docker load -i images/taursu-zuul.tar
+
+
+# mongo
+docker pull mongo
+docker run -p 27017:27017 -v /var/db/mongo:/data/db --name mongodb -d mongo
+
+# redis
+docker pull redis
+docker run -d -p 6379:6379 --name redis redis
+
+# postgres
+docker run --name postgres -e POSTGRES_PASSWORD=gemini_graph -e POSTGRES_USER=gemini_graph -p 5432:5432 -d postgres
+
+# 创建数据库
 
 
 # pull gemini
